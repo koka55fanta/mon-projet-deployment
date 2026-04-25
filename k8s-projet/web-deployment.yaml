@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: kokafanta24/app-web:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "mysql" # Se connecte au nom du service Kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  type: LoadBalancer # Modifié pour k3d (anciennement NodePort)
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 80
