@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: kokafanta24/app-web:d9daab0
+        image: kokafanta24/app-web:15959ab
         imagePullPolicy: Always
         ports:
         - containerPort: 80
