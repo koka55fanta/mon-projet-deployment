@@ -25,6 +25,14 @@ spec:
       containers:
       - image: mysql:8.0
         name: mysql
+        # 🚀 NOUVEAU : On sécurise la consommation de la RAM et du CPU
+        resources:
+          requests:
+            memory: "256Mi"   # Minimum garanti pour que MySQL s'allume
+            cpu: "100m"
+          limits:
+            memory: "1Gi"     # On le laisse monter jusqu'à 1 Go maximum
+            cpu: "500m"       # Limite la consommation du processeur
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "tK5aE!aE(_FU4_dv"
@@ -40,13 +48,13 @@ spec:
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-        - name: mysql-initdb # Nouveau : Monte le dossier d'initialisation
+        - name: mysql-initdb
           mountPath: /docker-entrypoint-initdb.d
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pvc
-      - name: mysql-initdb # Nouveau : Lie le volume à la ConfigMap
+      - name: mysql-initdb
         configMap:
           name: mysql-init-script
 ---
