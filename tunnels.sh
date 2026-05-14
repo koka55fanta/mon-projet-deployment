@@ -20,13 +20,10 @@ echo "🧹 4. Nettoyage des réseaux..."
 pkill -f "port-forward"
 sleep 2
 
-echo "🌐 5. Lancement de tous les tunnels en arrière-plan..."
-# App Web
-kubectl port-forward svc/web-service 8081:80 --address 0.0.0.0 > /dev/null 2>&1 &
-# ArgoCD
-kubectl port-forward svc/argocd-server -n argocd 8085:80 --address 0.0.0.0 > /dev/null 2>&1 &
-# Grafana
-kubectl port-forward svc/kube-stack-grafana -n monitoring 8082:80 --address 0.0.0.0 > /dev/null 2>&1 &
+echo "🌐 5. Lancement des tunnels avec NOHUP (Anti-crash)..."
+# 🚀 AJOUT DE NOHUP POUR RENDRE LES TUNNELS IMMORTELS
+nohup kubectl port-forward svc/web-service 8081:80 --address 0.0.0.0 > /dev/null 2>&1 &
+nohup kubectl port-forward svc/argocd-server -n argocd 8085:80 --address 0.0.0.0 > /dev/null 2>&1 &
+nohup kubectl port-forward svc/kube-stack-grafana -n monitoring 8082:80 --address 0.0.0.0 > /dev/null 2>&1 &
 
-echo "✅ TOUT EST EN LIGNE ! Laisse Kubernetes stabiliser les pods pendant 1 minute."
-echo "👉 N'oublie pas : Ports à passer en Public : 8081 (Web), 8085 (ArgoCD), 8082 (Grafana)"
+echo "✅ TOUT EST EN LIGNE !"
