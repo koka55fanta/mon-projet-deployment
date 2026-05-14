@@ -1,29 +1,32 @@
 #!/bin/bash
-echo "🔄 1. Attente du réveil de Kubernetes (K3s)..."
+echo "🔄 0. Attente du réveil de Kubernetes (K3s)..."
 until kubectl get nodes > /dev/null 2>&1; do sleep 2; done
 
-echo "🚀 2. Réveil de l'infrastructure..."
+echo "🚀 1. Allumage d'ArgoCD..."
 kubectl scale deployment argocd-server argocd-repo-server argocd-dex-server argocd-notifications-controller -n argocd --replicas=1
 kubectl scale statefulset argocd-application-controller -n argocd --replicas=1
+
+echo "⏳ Attente de 15 secondes pour laisser le CPU respirer..."
+sleep 15
+
+echo "📈 2. Allumage de la stack Monitoring (Prometheus & Grafana)..."
 kubectl scale deployment kube-stack-kube-prometheus-operator kube-stack-grafana -n monitoring --replicas=1
 kubectl scale statefulset prometheus-kube-stack-kube-prometheus-prometheus alertmanager-kube-stack-kube-prometheus-alertmanager -n monitoring --replicas=1
 
-echo "⏳ 3. Attente de la disponibilité des outils DevOps..."
-# On attend ArgoCD
-kubectl wait --for=condition=available --timeout=120s deployment/argocd-server -n argocd
-# 🚀 NOUVEAU : On attend Grafana
-kubectl wait --for=condition=available --timeout=120s deployment/kube-stack-grafana -n monitoring
+echo "⏳ 3. Attente supplémentaire de 30 secondes pour MySQL et l'app Web..."
+sleep 30
 
-echo "🌍 4. Attente de l'application Web et MySQL (Patience...)"
-kubectl wait --for=condition=available --timeout=180s deployment/web
-
-echo "🌐 5. Lancement sécurisé des tunnels..."
+echo "🧹 4. Nettoyage des réseaux..."
 pkill -f "port-forward"
 sleep 2
 
-# Lancement en arrière-plan
+echo "🌐 5. Lancement de tous les tunnels en arrière-plan..."
+# App Web
 kubectl port-forward svc/web-service 8081:80 --address 0.0.0.0 > /dev/null 2>&1 &
+# ArgoCD
 kubectl port-forward svc/argocd-server -n argocd 8085:80 --address 0.0.0.0 > /dev/null 2>&1 &
+# Grafana
 kubectl port-forward svc/kube-stack-grafana -n monitoring 8082:80 --address 0.0.0.0 > /dev/null 2>&1 &
 
-echo "✅ TOUT EST PRÊT ! Les interfaces sont opérationnelles."
+echo "✅ TOUT EST EN LIGNE ! Laisse Kubernetes stabiliser les pods pendant 1 minute."
+echo "👉 N'oublie pas : Ports à passer en Public : 8081 (Web), 8085 (ArgoCD), 8082 (Grafana)"
