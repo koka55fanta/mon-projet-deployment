@@ -1,6 +1,17 @@
 {
   "name": "Mon Environnement K3s",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "postStartCommand": "bash ./tunnels.sh &",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "enableNonRootDocker": "true",
+      "moby": "true"
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "kubectl": "latest",
+      "helm": "latest",
+      "minikube": "none"
+    }
+  },
+  "postCreateCommand": "curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash",
   "forwardPorts": [8081, 8082, 8085]
 }
