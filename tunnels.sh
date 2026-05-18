@@ -1,14 +1,16 @@
 #!/bin/bash
 
-# Fichier de log pour voir ce qui se passe
 LOG_FILE="/tmp/tunnels-startup.log"
 exec > >(tee -a ${LOG_FILE} )
 exec 2> >(tee -a ${LOG_FILE} >&2)
 
 echo "--- Début du script tunnels.sh à $(date) ---"
 
+# CORRECTION CRUCIALE ICI
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
 echo "🔄 0. Attente du réveil de Kubernetes (K3s)..."
-until kubectl get nodes > /dev/null 2>&1; do sleep 2; done
+until kubectl get nodes > /dev/null 2>&1; do sleep 5; done
 echo "K3s est réveillé !"
 
 echo "🚀 1. Allumage d'ArgoCD..."
@@ -22,7 +24,7 @@ echo "📈 2. Allumage de la stack Monitoring (Prometheus & Grafana)..."
 kubectl scale deployment kube-stack-kube-prometheus-operator kube-stack-grafana -n monitoring --replicas=1
 kubectl scale statefulset prometheus-kube-stack-kube-prometheus-prometheus alertmanager-kube-stack-kube-prometheus-alertmanager -n monitoring --replicas=1
 
-echo "⏳ 3. Attente supplémentaire de 30 secondes pour MySQL et l'app Web..."
+echo "⏳ 3. Attente supplémentaire de 30 secondes..."
 sleep 30
 
 echo "🧹 4. Nettoyage des réseaux..."
