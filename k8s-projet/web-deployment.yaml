@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: kokafanta24/app-web:5ed5c1e
+        image: kokafanta24/app-web:96546bc
         imagePullPolicy: Always
         # 🚀 NOUVEAU : Le garde-fou pour la RAM et le CPU
         resources:
