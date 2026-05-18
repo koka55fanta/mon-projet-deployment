@@ -1,4 +1,6 @@
 {
   "name": "Mon Environnement K3s",
-  "postStartCommand": "bash ./tunnels.sh"
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "postStartCommand": "bash ./tunnels.sh",
+  "forwardPorts": [8081, 8082, 8085]
 }
