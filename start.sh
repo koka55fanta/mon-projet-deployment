@@ -34,6 +34,12 @@ kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 echo "⏳ Attente qu'ArgoCD démarre (cela peut prendre 2-3 minutes)..."
 kubectl -n argocd rollout status deployment argocd-server --timeout=300s || echo "⚠️ ArgoCD met du temps, on continue le déploiement..."
+# Patcher ArgoCD pour désactiver HTTPS (Codespaces gère déjà le HTTPS)
+echo "🔧 Configuration d'ArgoCD en mode HTTP (compatible Codespaces)..."
+kubectl -n argocd patch deployment argocd-server --type='json' -p='[
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}
+]' 2>/dev/null || echo "⚠️ Patch insecure déjà appliqué"
+kubectl -n argocd rollout status deployment argocd-server --timeout=120s || true
 # ── 3. Déploiement DIRECT des ressources Kubernetes ──
 echo ""
 echo "📦 Déploiement de MySQL et de l'Application Web..."
