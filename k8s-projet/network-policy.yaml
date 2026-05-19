@@ -13,4 +13,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app: web-app # Seul le pod web peut parler à MySQL
+          app: web-app
+    ports:
+    - protocol: TCP
+      port: 3306

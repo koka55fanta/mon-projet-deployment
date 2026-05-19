@@ -1,4 +1,0 @@
-{
-  "name": "Mon Environnement K3s",
-  "postStartCommand": "bash ./tunnels.sh"
-}

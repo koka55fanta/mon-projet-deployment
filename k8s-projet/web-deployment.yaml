@@ -6,11 +6,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: web
+      app: web-app
   template:
     metadata:
       labels:
-        app: web
+        app: web-app
     spec:
       containers:
       - name: web
@@ -25,6 +25,20 @@ spec:
             cpu: "250m"
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 3
         env:
         - name: DB_HOST
           value: "mysql"
@@ -42,7 +56,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: web
+    app: web-app
   ports:
     - port: 80
       targetPort: 80

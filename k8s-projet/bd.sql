@@ -1,14 +1,18 @@
+SET NAMES 'utf8mb4';
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+CREATE DATABASE IF NOT EXISTS bd_final;
+USE bd_final;
+
 -- 1. CREATION DES TABLES
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL,
   `categorie` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `commentaires` (
+CREATE TABLE IF NOT EXISTS `commentaires` (
   `id` int(11) NOT NULL,
   `reclamation_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -17,13 +21,13 @@ CREATE TABLE `commentaires` (
   `lu` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `gestionnaires` (
+CREATE TABLE IF NOT EXISTS `gestionnaires` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `categorie_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `pieces_jointes` (
+CREATE TABLE IF NOT EXISTS `pieces_jointes` (
   `id` int(11) NOT NULL,
   `reclamation_id` int(11) NOT NULL,
   `chemin_fichier` varchar(250) NOT NULL,
@@ -31,7 +35,7 @@ CREATE TABLE `pieces_jointes` (
   `date_ajout` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `reclamations` (
+CREATE TABLE IF NOT EXISTS `reclamations` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `categorie_id` int(11) NOT NULL,
@@ -41,12 +45,12 @@ CREATE TABLE `reclamations` (
   `statut_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `statuts` (
+CREATE TABLE IF NOT EXISTS `statuts` (
   `id` int(11) NOT NULL,
   `statut` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `nom` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -80,7 +84,7 @@ INSERT INTO `reclamations` (`id`, `user_id`, `categorie_id`, `objet`, `descripti
 (9, 1, 2, 'wifi ne pas travail', 'wifi dans salle 3 ne pas travail et aussi cable port rj45 dans la tere', '2025-12-12', 1);
 
 INSERT INTO `statuts` (`id`, `statut`) VALUES
-(1, 'Acceptée'), (2, 'Fermée'), (3, 'En cours de traitement'), (4, 'En attente d’informations');
+(1, 'Acceptée'), (2, 'Fermée'), (3, 'En cours de traitement'), (4, 'En attente d''informations');
 
 INSERT INTO `users` (`id`, `nom`, `email`, `role`, `mot_de_passe`) VALUES
 (1, 'reclamant', 'reclamant@email.com', 'Réclamant', '$2y$10$iIcAHnS8qJxXVEXesneiUOpIVpC72NBKx7LGfb/ee355zfmCOjH1m'),

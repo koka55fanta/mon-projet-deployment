@@ -3,8 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
 spec:
-  # 🚀 NOUVEAU : On force l'utilisation du stockage répliqué Longhorn
-  
   accessModes:
     - ReadWriteOnce
   resources:
@@ -16,7 +14,7 @@ kind: Deployment
 metadata:
   name: mysql
 spec:
-  # 🚀 NOUVEAU : Stratégie Recreate pour éviter le verrouillage du volume entre deux nœuds
+  replicas: 1
   strategy:
     type: Recreate
   selector:
@@ -32,11 +30,11 @@ spec:
         name: mysql
         resources:
           requests:
-            memory: "256Mi"   # Minimum garanti pour que MySQL s'allume
+            memory: "256Mi"
             cpu: "100m"
           limits:
-            memory: "1Gi"     # On le laisse monter jusqu'à 1 Go maximum
-            cpu: "500m"       # Limite la consommation du processeur
+            memory: "1Gi"
+            cpu: "500m"
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "tK5aE!aE(_FU4_dv"
@@ -49,6 +47,32 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
+        readinessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -h
+            - localhost
+            - -u
+            - root
+            - -ptK5aE!aE(_FU4_dv
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -h
+            - localhost
+            - -u
+            - root
+            - -ptK5aE!aE(_FU4_dv
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 5
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql

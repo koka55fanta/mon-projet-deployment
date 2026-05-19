@@ -1,6 +1,11 @@
 {
-  "name": "Mon Environnement K3s",
+  "name": "Mon Environnement K3s - DevOps Projet",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "32gb"
+  },
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "enableNonRootDocker": "true",
@@ -13,5 +18,14 @@
     }
   },
   "postCreateCommand": "curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash",
-  "forwardPorts": [8081, 8082, 8085]
+  "postStartCommand": "bash start.sh",
+  "forwardPorts": [8081, 8082, 8085],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.vscode-yaml",
+        "ms-kubernetes-tools.vscode-kubernetes-tools"
+      ]
+    }
+  }
 }

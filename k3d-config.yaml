@@ -2,5 +2,9 @@ apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
   name: mon-cluster
-servers: 1 # 1 Control Plane suffit largement
-agents: 2  # 2 Workers pour tester ton anti-affinité
+servers: 1
+agents: 2
+ports:
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
