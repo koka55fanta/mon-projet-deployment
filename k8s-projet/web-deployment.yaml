@@ -25,8 +25,7 @@ spec:
            # topologyKey: "kubernetes.io/hostname"
       containers:
       - name: web
-        # ⚠️ C'est ici la magie : on utilise l'image v3 avec la correction Apache
-        image: kokafanta24/app-web:v3
+        image: kokafanta24/app-web:b0789b7
         imagePullPolicy: Always
         resources:
           requests:
