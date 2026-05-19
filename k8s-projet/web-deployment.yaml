@@ -14,31 +14,40 @@ spec:
     spec:
       containers:
       - name: web
-        image: kokafanta24/app-web:d2b2070
+        image: kokafanta24/app-web:ea95b65
         imagePullPolicy: Always
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "50m"
+            memory: "128Mi"
+            cpu: "100m"
           limits:
-            memory: "256Mi"
-            cpu: "250m"
+            memory: "512Mi"
+            cpu: "500m"
         ports:
         - containerPort: 80
         readinessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          timeoutSeconds: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 10
         livenessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          timeoutSeconds: 3
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 5
+        startupProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 30
         env:
         - name: DB_HOST
           value: "mysql"
