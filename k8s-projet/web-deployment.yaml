@@ -25,7 +25,8 @@ spec:
            # topologyKey: "kubernetes.io/hostname"
       containers:
       - name: web
-        image: kokafanta24/app-web:b0789b7
+        # ⚠️ C'est ici la magie : on utilise l'image v3 avec la correction Apache
+        image: kokafanta24/app-web:v3
         imagePullPolicy: Always
         resources:
           requests:
@@ -38,8 +39,13 @@ spec:
         - containerPort: 80
         env:
         - name: DB_HOST
-          value: "mysql"
----
+          value: "mysql"      # Le nom du Service Kubernetes de ta base de données
+        - name: DB_NAME
+          value: "bd_final"
+        - name: DB_USER
+          value: "appuser"
+        - name: DB_PASS
+          value: "apppassword"
 apiVersion: v1
 kind: Service
 metadata:
