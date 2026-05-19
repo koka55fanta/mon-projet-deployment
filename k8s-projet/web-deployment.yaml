@@ -25,7 +25,7 @@ spec:
            # topologyKey: "kubernetes.io/hostname"
       containers:
       - name: web
-        image: kokafanta24/app-web:b0789b7
+        image: kokafanta24/app-web:425ecb0
         imagePullPolicy: Always
         resources:
           requests:
