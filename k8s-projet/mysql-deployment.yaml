@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
 spec:
+  # 🚀 NOUVEAU : On force l'utilisation du stockage répliqué Longhorn
+  storageClassName: longhorn-replica-3
   accessModes:
     - ReadWriteOnce
   resources:
@@ -14,6 +16,9 @@ kind: Deployment
 metadata:
   name: mysql
 spec:
+  # 🚀 NOUVEAU : Stratégie Recreate pour éviter le verrouillage du volume entre deux nœuds
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: mysql
@@ -25,7 +30,6 @@ spec:
       containers:
       - image: mysql:8.0
         name: mysql
-        # 🚀 NOUVEAU : On sécurise la consommation de la RAM et du CPU
         resources:
           requests:
             memory: "256Mi"   # Minimum garanti pour que MySQL s'allume

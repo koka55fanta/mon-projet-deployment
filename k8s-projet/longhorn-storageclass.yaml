@@ -1,0 +1,7 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-replica-3
+provisioner: driver.longhorn.io
+parameters:
+  numberOfReplicas: "3" # <-- La magie de la réplication est ici

@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mon-application-web
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # ⚠️ REMPLACE par l'URL de ton propre dépôt Git (GitHub, GitLab, etc.)
+    repoURL: 'https://github.com/koka55fanta/mon-projet-deployment.git'
+    targetRevision: HEAD
+    # Le dossier dans ton repo où se trouvent tes fichiers YAML (ex: web-deployment.yaml)
+    path: k8s-projet
+  destination:
+    # On déploie dans le cluster local (celui où ArgoCD tourne)
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true      # Supprime les ressources K8s si tu supprimes le YAML de Git
+      selfHeal: true   # Rétablit l'état si quelqu'un modifie le cluster à la main

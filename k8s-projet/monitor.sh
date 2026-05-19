@@ -1,5 +1,4 @@
 #!/bin/bash
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 echo "🛠️ Vérification de Helm..."
 if ! command -v helm &> /dev/null; then
