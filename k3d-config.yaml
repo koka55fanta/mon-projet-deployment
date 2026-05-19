@@ -1,0 +1,6 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: mon-cluster
+servers: 3 # <-- C'est ici qu'on règle le problème du Quorum (3 Masters)
+agents: 3  # Tes 3 Workers
