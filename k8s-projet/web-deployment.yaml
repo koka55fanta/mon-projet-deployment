@@ -12,20 +12,9 @@ spec:
       labels:
         app: web
     spec:
-      # 🚀 RETOUR DE L'ANTI-AFFINITÉ : On force la séparation sur tes 2 nouveaux nœuds
-      #affinity:
-        #podAntiAffinity:
-         # requiredDuringSchedulingIgnoredDuringExecution:
-         # - labelSelector:
-             # matchExpressions:
-              #- key: app
-               # operator: In
-               # values:
-               # - web
-           # topologyKey: "kubernetes.io/hostname"
       containers:
       - name: web
-        image: kokafanta24/app-web:b0789b7
+        image: kokafanta24/app-web:v3
         imagePullPolicy: Always
         resources:
           requests:
@@ -38,13 +27,14 @@ spec:
         - containerPort: 80
         env:
         - name: DB_HOST
-          value: "mysql"      # Le nom du Service Kubernetes de ta base de données
+          value: "mysql"
         - name: DB_NAME
           value: "bd_final"
         - name: DB_USER
           value: "appuser"
         - name: DB_PASS
           value: "apppassword"
+---
 apiVersion: v1
 kind: Service
 metadata:
