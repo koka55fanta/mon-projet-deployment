@@ -13,16 +13,16 @@ spec:
         app: web
     spec:
       # 🚀 RETOUR DE L'ANTI-AFFINITÉ : On force la séparation sur tes 2 nouveaux nœuds
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - web
-            topologyKey: "kubernetes.io/hostname"
+      #affinity:
+        #podAntiAffinity:
+         # requiredDuringSchedulingIgnoredDuringExecution:
+         # - labelSelector:
+             # matchExpressions:
+              #- key: app
+               # operator: In
+               # values:
+               # - web
+           # topologyKey: "kubernetes.io/hostname"
       containers:
       - name: web
         image: kokafanta24/app-web:c6d2e67
