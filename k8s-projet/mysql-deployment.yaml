@@ -4,7 +4,7 @@ metadata:
   name: mysql-pvc
 spec:
   # 🚀 NOUVEAU : On force l'utilisation du stockage répliqué Longhorn
-  storageClassName: longhorn-replica-3
+  
   accessModes:
     - ReadWriteOnce
   resources:

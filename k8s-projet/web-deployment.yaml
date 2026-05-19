@@ -14,16 +14,7 @@ spec:
         app: web
     spec:
       # 🚀 NOUVEAU : On force la séparation physique des pods sur des nœuds différents
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - web
-            topologyKey: "kubernetes.io/hostname"
+  
       containers:
       - name: web
         image: kokafanta24/app-web:c6d2e67
