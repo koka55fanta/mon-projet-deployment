@@ -14,20 +14,20 @@ spec:
     spec:
       containers:
       - name: web
-        image: kokafanta24/app-web:53b1f91
+        image: kokafanta24/app-web:ea95b65
         imagePullPolicy: Always
         resources:
           requests:
-            memory: "128Mi"
+            memory: "1024Mi"
             cpu: "100m"
           limits:
-            memory: "512Mi"
+            memory: "1024Mi"
             cpu: "500m"
         ports:
         - containerPort: 80
         readinessProbe:
           httpGet:
-            path: /
+            path: /index/login_page.php
             port: 80
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -35,7 +35,7 @@ spec:
           failureThreshold: 10
         livenessProbe:
           httpGet:
-            path: /
+            path: /index/login_page.php
             port: 80
           initialDelaySeconds: 60
           periodSeconds: 15
@@ -43,7 +43,7 @@ spec:
           failureThreshold: 5
         startupProbe:
           httpGet:
-            path: /
+            path: /index/login_page.php
             port: 80
           initialDelaySeconds: 10
           periodSeconds: 5
