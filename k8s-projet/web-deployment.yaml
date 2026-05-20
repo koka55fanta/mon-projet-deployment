@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: kokafanta24/app-web:0e58d23
+        image: kokafanta24/app-web:6cf7509
         imagePullPolicy: Always
         resources:
           requests:
